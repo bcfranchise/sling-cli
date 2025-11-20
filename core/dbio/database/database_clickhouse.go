@@ -417,7 +417,7 @@ func (conn *ClickhouseConn) BulkImportStream(tableFName string, ds *iop.Datastre
 				return g.Error(err, "could not prepare statement")
 			}
 
-			var decimalCols, intCols, jsonCols, int64Cols, floatCols []int
+			var decimalCols, intCols, jsonCols, int64Cols, floatCols, boolCols []int
 			for i, col := range batch.Columns {
 				switch {
 				case col.Type == iop.DecimalType:
@@ -430,6 +430,8 @@ func (conn *ClickhouseConn) BulkImportStream(tableFName string, ds *iop.Datastre
 					int64Cols = append(int64Cols, i)
 				case col.Type == iop.FloatType:
 					floatCols = append(floatCols, i)
+				case col.Type == iop.BoolType:
+					boolCols = append(boolCols, i)
 				}
 			}
 
@@ -482,6 +484,14 @@ func (conn *ClickhouseConn) BulkImportStream(tableFName string, ds *iop.Datastre
 				for _, colI := range floatCols {
 					if row[colI] != nil {
 						row[colI], err = cast.ToFloat64E(row[colI])
+						eG.Capture(err)
+					}
+				}
+
+				// set Bool correctly
+				for _, colI := range boolCols {
+					if row[colI] != nil {
+						row[colI], err = cast.ToBoolE(row[colI])
 						eG.Capture(err)
 					}
 				}

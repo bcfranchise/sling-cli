@@ -128,6 +128,8 @@ bigquery	struct	json		FALSE	FALSE
 bigquery	time	time	col_time time	FALSE	FALSE	
 bigquery	timestamp	timestamp	col_timestamp timestamp	TRUE	TRUE	
 clickhouse	array	json	col_array array	FALSE	FALSE	
+clickhouse	bool	bool	col_bool bool	FALSE	FALSE	
+clickhouse	boolean	bool	col_bool bool	FALSE	FALSE	
 clickhouse	uuid	uuid	col_uuid array	FALSE	FALSE	
 clickhouse	date	date	col_date date	TRUE	TRUE	
 clickhouse	datetime	datetime	col_datetime datetime	TRUE	TRUE	
